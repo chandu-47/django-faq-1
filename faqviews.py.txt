@@ -1,0 +1,10 @@
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from .models import FAQ
+
+@api_view(['GET'])
+def faq_list(request):
+    lang = request.GET.get('lang', 'en')
+    faqs = FAQ.objects.all()
+    data = [{"question": faq.get_translated_question(lang), "answer": faq.answer} for faq in faqs]
+    return Response(data)
